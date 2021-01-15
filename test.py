@@ -1,12 +1,11 @@
 from skimage.segmentation import active_contour
 import matplotlib.pyplot as plt
-import pydicom
 import numpy as np
 from scipy.interpolate import CubicSpline
 import ctypes
 import copy
 import os
-
+import cv2
 
 class Filter:
     def __init__(self, inputs: np.ndarray, DLL_Path: str = os.getcwd()+"\\Lib.so"):
@@ -65,7 +64,7 @@ def getContour(img: np.ndarray, max_points: int = 50) -> np.ndarray:
 
     # 对手动标记的点进行3次样条插值
     t_ori = np.arange(1, points_num + 1)
-    Spline = CubicSpline(t, position, bc_type='periodic')
+    Spline = CubicSpline(t_ori, position, bc_type='periodic')
     t_new = np.arange(1, points_num+1, 0.1)
     position_new = Spline(t_new)
     position_new = np.array(position_new, dtype=float)
@@ -80,9 +79,7 @@ def getContour(img: np.ndarray, max_points: int = 50) -> np.ndarray:
 
 
 def main():
-    data = pydicom.read_file('./20190521/CASE134/RUN1/PDJAQ5VE')
-    data_arr = data.pixel_array
-    sample = data_arr[0, :, :]
+    sample = cv2.imread('./IM000001_0005.png',0)
     img_filter = Filter(copy.deepcopy(sample).astype(float))
     gaussian = img_filter.Gaussian()
     init_contour = getContour(gaussian)
@@ -93,3 +90,7 @@ def main():
     plt.plot(snake[:, 0], snake[:, 1], '-b', lw=3)
     plt.axis("off")
     plt.show()
+
+
+if __name__ == '__main__':
+    main()
