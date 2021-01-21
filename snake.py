@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp2d, CubicSpline
 
 
-def interp(matrix, xs, ys):
+def interp(matrix: np.ndarray, xs: np.ndarray, ys: np.ndarray) -> np.ndarray:
     x = np.arange(matrix.shape[0])
     y = np.arange(matrix.shape[1])
     f = interp2d(x, y, matrix)
