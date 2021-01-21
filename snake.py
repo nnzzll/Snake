@@ -32,7 +32,7 @@ def getContours(image: np.ndarray, max_points: int = 50, cmap: str = 'gray') -> 
     position_new = np.array(position_new, dtype=float)
 
     # 显示标记结果
-    plt.imshow(img, cmap='gray')
+    plt.imshow(image, cmap='gray')
     plt.plot(position_ori[:, 0], position_ori[:, 1], 'o')
     plt.plot(position_new[:, 0], position_new[:, 1], '-')
     plt.show()
